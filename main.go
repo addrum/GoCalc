@@ -18,25 +18,62 @@ func main() {
 	first, _ := reader.ReadString('\n')
 
 	// remove new line chars
-	var trim = strings.Trim(first, "\r\n")
-	num1, _ := strconv.ParseFloat(trim, 64)
+	var firsttrim = trim(first, "\r\n")
+	num1, _ := strconv.ParseFloat(firsttrim, 64)
+
+	fmt.Printf("Enter your operand: ")
+	op, _ := reader.ReadString('\n')
+
+	var optrim = trim(op, "\r\n")
+	var vo = validOp(optrim)
+	for !vo {
+		fmt.Printf("Invalid operand, enter a new one: ")
+		op, _ := reader.ReadString('\n')
+		optrim = trim(op, "\r\n")
+		vo = validOp(optrim)
+	}
 
 	fmt.Printf("Enter your second number: ")
 	second, _ := reader.ReadString('\n')
 
 	// remove  new line chars
-	trim = strings.Trim(second, "\r\n")
-	num2, _ := strconv.ParseFloat(trim, 64)
+	var secondtrim = strings.Trim(second, "\r\n")
+	num2, _ := strconv.ParseFloat(secondtrim, 64)
 
-	var result = addition(num1, num2)
-
-	fmt.Printf("Result: " + strconv.FormatFloat(result, 'f', -1, 64))
+	fmt.Printf("Result: " + callCalculation(optrim, num1, num2))
+	//fmt.Printf("Result: " + strconv.FormatFloat(result, 'f', -1, 64))
 
 	/*fmt.Printf("Add: " + strconv.FormatFloat(addition(2, 5), 'f', -1, 64))
 	fmt.Printf("\nSub: " + strconv.FormatFloat(subtract(5, 2), 'f', -1, 64))
 	fmt.Printf("\nMult: " + strconv.FormatFloat(multiply(5, 2), 'f', -1, 64))
 	fmt.Printf("\nDiv: " + strconv.FormatFloat(divide(10, 2), 'f', -1, 64))
 	fmt.Printf("\nMod: " + strconv.FormatInt(modulo(10, 2), 10))*/
+}
+
+func validOp(op string) bool {
+	// slice declared without element count
+	validOps := []string{"+", "-", "*", "/"}
+	for _, validOp := range validOps {
+		if validOp == op {
+			return true
+		}
+	}
+	return false
+}
+
+func callCalculation(op string, a, b float64) string {
+	if op == "+" {
+		return convertFloat64ToString(addition(a, b))
+	}
+	return "Couldn't calculate correctly."
+}
+
+func convertFloat64ToString(float float64) string {
+	return strconv.FormatFloat(float, 'f', -1, 64)
+}
+
+func trim(value, cutset string) string {
+	return strings.Trim(value, cutset)
 }
 
 // Go has two floating point types: float32 and float64 (also often referred to as single precision and double precision respectively)

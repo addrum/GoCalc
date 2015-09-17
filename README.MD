@@ -1,0 +1,1 @@
+My first attempt at writing a GoLang application. It's a simple command line calculator for a bit of fun.

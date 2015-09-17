@@ -9,38 +9,58 @@ import (
 )
 
 func main() {
-	//fmt.Printf("Now you have %g problems. %f", math.Nextafter(2, 3), math.Nextafter(5, 5))
+	run := true
+
+	fmt.Printf("Welcome to this simple CLI calculator.\nFunction operators are: add, subtract, multiply, divide, modulo\nPress 'q' to quit at any time.\n--------------------------------------\n")
 
 	// reads user input
 	reader := bufio.NewReader(os.Stdin)
 
-	fmt.Printf("Enter your first number: ")
-	first, _ := reader.ReadString('\n')
+	for run {
+		fmt.Printf("Enter your first number: ")
+		first, _ := reader.ReadString('\n')
 
-	// remove new line chars
-	var trimmed = trim(first, "\r\n")
-	num1, _ := strconv.ParseFloat(trimmed, 64)
+		// remove new line chars
+		var trimmed = trim(first, "\r\n")
+		if shouldQuit(trimmed) {
+			fmt.Printf("Quitting...")
+			os.Exit(0)
+		}
+		num1, _ := strconv.ParseFloat(trimmed, 64)
 
-	fmt.Printf("Enter your operand: ")
-	op, _ := reader.ReadString('\n')
-
-	var optrim = trim(op, "\r\n")
-	var vo = validOp(optrim)
-	for !vo {
-		fmt.Printf("Invalid operand, enter a new one: ")
+		fmt.Printf("Enter your operand: ")
 		op, _ := reader.ReadString('\n')
-		optrim = trim(op, "\r\n")
-		vo = validOp(optrim)
+
+		var optrim = trim(op, "\r\n")
+		if shouldQuit(optrim) {
+			fmt.Printf("Quitting...")
+			os.Exit(0)
+		}
+		var vo = validOp(optrim)
+		for !vo {
+			fmt.Printf("Invalid operand, enter a new one: ")
+			op, _ := reader.ReadString('\n')
+			optrim = trim(op, "\r\n")
+			if shouldQuit(optrim) {
+				fmt.Printf("Quitting...")
+				os.Exit(0)
+			}
+			vo = validOp(optrim)
+		}
+
+		fmt.Printf("Enter your second number: ")
+		second, _ := reader.ReadString('\n')
+
+		// remove new line chars
+		trimmed = trim(second, "\r\n")
+		if shouldQuit(trimmed) {
+			fmt.Printf("Quitting...")
+			os.Exit(0)
+		}
+		num2, _ := strconv.ParseFloat(trimmed, 64)
+
+		fmt.Printf("Result: " + callCalculation(optrim, num1, num2) + "\n--------------------------------------\n")
 	}
-
-	fmt.Printf("Enter your second number: ")
-	second, _ := reader.ReadString('\n')
-
-	// remove  new line chars
-	trimmed = strings.Trim(second, "\r\n")
-	num2, _ := strconv.ParseFloat(trimmed, 64)
-
-	fmt.Printf("Result: " + callCalculation(optrim, num1, num2))
 
 	//fmt.Printf("Result: " + strconv.FormatFloat(result, 'f', -1, 64))
 
@@ -56,7 +76,7 @@ func callCalculation(op string, a, b float64) string {
 		return convertFloat64ToString(addition(a, b))
 	} else if op == "-" {
 		return convertFloat64ToString(subtract(a, b))
-	} else if op == "*" {
+	} else if op == "*" || op == "x" || op == "X" {
 		return convertFloat64ToString(multiply(a, b))
 	} else if op == "/" {
 		return convertFloat64ToString(divide(a, b))
@@ -68,11 +88,18 @@ func callCalculation(op string, a, b float64) string {
 
 func validOp(op string) bool {
 	// slice declared without element count
-	validOps := []string{"+", "-", "*", "/", "%"}
+	validOps := []string{"+", "-", "*", "x", "X", "/", "%"}
 	for _, validOp := range validOps {
 		if validOp == op {
 			return true
 		}
+	}
+	return false
+}
+
+func shouldQuit(trimmed string) bool {
+	if trimmed == "q" {
+		return true
 	}
 	return false
 }

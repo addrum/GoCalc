@@ -50,9 +50,24 @@ func main() {
 	fmt.Printf("\nMod: " + strconv.FormatInt(modulo(10, 2), 10))*/
 }
 
+func callCalculation(op string, a, b float64) string {
+	if op == "+" {
+		return convertFloat64ToString(addition(a, b))
+	} else if op == "-" {
+		return convertFloat64ToString(subtract(a, b))
+	} else if op == "*" {
+		return convertFloat64ToString(multiply(a, b))
+	} else if op == "/" {
+		return convertFloat64ToString(divide(a, b))
+	} else if op == "%" {
+		return convertInt64ToString(modulo(int64(a), int64(b)))
+	}
+	return "Couldn't calculate correctly."
+}
+
 func validOp(op string) bool {
 	// slice declared without element count
-	validOps := []string{"+", "-", "*", "/"}
+	validOps := []string{"+", "-", "*", "/", "%"}
 	for _, validOp := range validOps {
 		if validOp == op {
 			return true
@@ -61,15 +76,12 @@ func validOp(op string) bool {
 	return false
 }
 
-func callCalculation(op string, a, b float64) string {
-	if op == "+" {
-		return convertFloat64ToString(addition(a, b))
-	}
-	return "Couldn't calculate correctly."
-}
-
 func convertFloat64ToString(float float64) string {
 	return strconv.FormatFloat(float, 'f', -1, 64)
+}
+
+func convertInt64ToString(i int64) string {
+	return strconv.FormatInt(i, 10)
 }
 
 func trim(value, cutset string) string {

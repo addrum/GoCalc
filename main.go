@@ -18,8 +18,8 @@ func main() {
 	first, _ := reader.ReadString('\n')
 
 	// remove new line chars
-	var firsttrim = trim(first, "\r\n")
-	num1, _ := strconv.ParseFloat(firsttrim, 64)
+	var trimmed = trim(first, "\r\n")
+	num1, _ := strconv.ParseFloat(trimmed, 64)
 
 	fmt.Printf("Enter your operand: ")
 	op, _ := reader.ReadString('\n')
@@ -37,10 +37,11 @@ func main() {
 	second, _ := reader.ReadString('\n')
 
 	// remove  new line chars
-	var secondtrim = strings.Trim(second, "\r\n")
-	num2, _ := strconv.ParseFloat(secondtrim, 64)
+	trimmed = strings.Trim(second, "\r\n")
+	num2, _ := strconv.ParseFloat(trimmed, 64)
 
 	fmt.Printf("Result: " + callCalculation(optrim, num1, num2))
+
 	//fmt.Printf("Result: " + strconv.FormatFloat(result, 'f', -1, 64))
 
 	/*fmt.Printf("Add: " + strconv.FormatFloat(addition(2, 5), 'f', -1, 64))

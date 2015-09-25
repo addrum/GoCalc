@@ -61,16 +61,9 @@ func main() {
 
 		fmt.Printf("Result: " + callCalculation(optrim, num1, num2) + "\n--------------------------------------\n")
 	}
-
-	//fmt.Printf("Result: " + strconv.FormatFloat(result, 'f', -1, 64))
-
-	/*fmt.Printf("Add: " + strconv.FormatFloat(addition(2, 5), 'f', -1, 64))
-	fmt.Printf("\nSub: " + strconv.FormatFloat(subtract(5, 2), 'f', -1, 64))
-	fmt.Printf("\nMult: " + strconv.FormatFloat(multiply(5, 2), 'f', -1, 64))
-	fmt.Printf("\nDiv: " + strconv.FormatFloat(divide(10, 2), 'f', -1, 64))
-	fmt.Printf("\nMod: " + strconv.FormatInt(modulo(10, 2), 10))*/
 }
 
+// calls the relevant mathematical operation methods
 func callCalculation(op string, a, b float64) string {
 	if op == "+" {
 		return convertFloat64ToString(addition(a, b))
@@ -86,6 +79,7 @@ func callCalculation(op string, a, b float64) string {
 	return "Couldn't calculate correctly."
 }
 
+// Checks if the operator entered is one of a valid list
 func validOp(op string) bool {
 	// slice declared without element count
 	validOps := []string{"+", "-", "*", "x", "X", "/", "%"}
@@ -97,6 +91,7 @@ func validOp(op string) bool {
 	return false
 }
 
+// Checks if the param trimmed is q - trimmed param has new line chars /r/n hence the trimming
 func shouldQuit(trimmed string) bool {
 	if trimmed == "q" {
 		return true
@@ -112,6 +107,7 @@ func convertInt64ToString(i int64) string {
 	return strconv.FormatInt(i, 10)
 }
 
+// trims a specific set of chars from the first param
 func trim(value, cutset string) string {
 	return strings.Trim(value, cutset)
 }
